@@ -1,0 +1,77 @@
+<!-- ============================================================
+     DRAWABLE RESOURCE FILES
+     Place each block below in its own file under res/drawable/
+     ============================================================ -->
+
+
+<!-- ── res/drawable/bg_circle_taken.xml ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#D6EFE0" />
+</shape>
+
+
+<!-- ── res/drawable/bg_circle_missed.xml ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#FDDDD6" />
+</shape>
+
+
+<!-- ── res/drawable/bg_circle_pending.xml ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#EFEFEA" />
+</shape>
+
+
+<!-- ── res/drawable/bg_circle_green_light.xml  (patient avatar) ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#D6EFE0" />
+</shape>
+
+
+<!-- ── res/drawable/bg_circle_green_xlight.xml  (doctor avatar) ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#EEF7F2" />
+</shape>
+
+
+<!-- ── res/drawable/bg_dot_green.xml ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#7BC49A" />
+</shape>
+
+
+<!-- ── res/drawable/bg_dot_red.xml ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#FDDDD6" />
+</shape>
+
+
+<!-- ── res/drawable/bg_dot_gray.xml ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#EFEFEA" />
+</shape>
+
+
+<!-- ── res/drawable/bg_next_time_chip.xml  (white-tinted pill badge) ── -->
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#2EFFFFFF" />   <!-- 18 % white overlay -->
+    <corners android:radius="10dp" />
+</shape>

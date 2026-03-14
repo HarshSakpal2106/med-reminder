@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_circle_green_light.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_circle_green_light.xml"
+    },
+    {
+        "merged": "com.example.medicinereminder.app-merged_res-31:/layout_activity_main.xml.flat",
+        "source": "com.example.medicinereminder.app-main-33:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_dot_green.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_dot_green.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_dot_red.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_dot_red.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_circle_green_xlight.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_circle_green_xlight.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_next_time_chip.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_next_time_chip.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_circle_taken.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_circle_taken.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_dot_gray.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_dot_gray.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\layout_item_medicine.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\layout\\item_medicine.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_circle_missed.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_circle_missed.xml"
+    },
+    {
+        "merged": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-merged_res-31:\\drawable_bg_circle_pending.xml.flat",
+        "source": "C:\\Users\\Parth\\.gradle\\daemon\\8.6\\com.example.medicinereminder.app-main-33:\\drawable\\bg_circle_pending.xml"
+    }
+]

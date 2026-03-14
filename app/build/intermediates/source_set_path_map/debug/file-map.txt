@@ -1,0 +1,34 @@
+com.example.medicinereminder.app-lifecycle-viewmodel-2.6.1-0 C:\Users\Parth\.gradle\caches\transforms-4\010e49a1e2f609363db84ec8c1d599de\transformed\lifecycle-viewmodel-2.6.1\res
+com.example.medicinereminder.app-jetified-lifecycle-process-2.6.1-1 C:\Users\Parth\.gradle\caches\transforms-4\09eb6fbd64d52e7ebe0c5cb52f88fc0f\transformed\jetified-lifecycle-process-2.6.1\res
+com.example.medicinereminder.app-transition-1.2.0-2 C:\Users\Parth\.gradle\caches\transforms-4\1aecaeee23fbe42a1e07c098cdfc273c\transformed\transition-1.2.0\res
+com.example.medicinereminder.app-jetified-savedstate-1.2.1-3 C:\Users\Parth\.gradle\caches\transforms-4\26638f15abacb46255e7507af34b5e4a\transformed\jetified-savedstate-1.2.1\res
+com.example.medicinereminder.app-jetified-annotation-experimental-1.3.0-4 C:\Users\Parth\.gradle\caches\transforms-4\2adbf20c7f3b255d78f220d0e65eaefb\transformed\jetified-annotation-experimental-1.3.0\res
+com.example.medicinereminder.app-jetified-appcompat-resources-1.6.1-5 C:\Users\Parth\.gradle\caches\transforms-4\2d15e06bb501dbe8e7c9626a4b6d2e60\transformed\jetified-appcompat-resources-1.6.1\res
+com.example.medicinereminder.app-core-1.9.0-6 C:\Users\Parth\.gradle\caches\transforms-4\364238b331a766ac18762b6cbf701f69\transformed\core-1.9.0\res
+com.example.medicinereminder.app-jetified-emoji2-1.2.0-7 C:\Users\Parth\.gradle\caches\transforms-4\3ad6a117f66377fb38fb1c0d2d18f65a\transformed\jetified-emoji2-1.2.0\res
+com.example.medicinereminder.app-material-1.11.0-8 C:\Users\Parth\.gradle\caches\transforms-4\444c2640ab44a6937833d9c7b1accd8e\transformed\material-1.11.0\res
+com.example.medicinereminder.app-lifecycle-livedata-core-2.6.1-9 C:\Users\Parth\.gradle\caches\transforms-4\5356b0ab2acbf63b6a122cc92b13b5af\transformed\lifecycle-livedata-core-2.6.1\res
+com.example.medicinereminder.app-jetified-lifecycle-viewmodel-savedstate-2.6.1-10 C:\Users\Parth\.gradle\caches\transforms-4\54eeb29720627747760b9c55e822e4d4\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\res
+com.example.medicinereminder.app-fragment-1.3.6-11 C:\Users\Parth\.gradle\caches\transforms-4\68c7943e0ad34f856cabd3648447f364\transformed\fragment-1.3.6\res
+com.example.medicinereminder.app-appcompat-1.6.1-12 C:\Users\Parth\.gradle\caches\transforms-4\6d4f71ac22de0c217a6fe48b0e3d74c3\transformed\appcompat-1.6.1\res
+com.example.medicinereminder.app-recyclerview-1.1.0-13 C:\Users\Parth\.gradle\caches\transforms-4\7b1f94988406a281e1b6c510e7da5a79\transformed\recyclerview-1.1.0\res
+com.example.medicinereminder.app-coordinatorlayout-1.1.0-14 C:\Users\Parth\.gradle\caches\transforms-4\9a14c5d3db1227d1fddfff92b56ca4b5\transformed\coordinatorlayout-1.1.0\res
+com.example.medicinereminder.app-cardview-1.0.0-15 C:\Users\Parth\.gradle\caches\transforms-4\9c2d994f94eff95ca8d162c3a037b5e0\transformed\cardview-1.0.0\res
+com.example.medicinereminder.app-constraintlayout-2.1.4-16 C:\Users\Parth\.gradle\caches\transforms-4\b06ed9fa17e2d552015a3b0c9bae4a7a\transformed\constraintlayout-2.1.4\res
+com.example.medicinereminder.app-jetified-profileinstaller-1.3.0-17 C:\Users\Parth\.gradle\caches\transforms-4\b080977f65d57ed26e08c5f84c79ae1e\transformed\jetified-profileinstaller-1.3.0\res
+com.example.medicinereminder.app-jetified-activity-1.8.0-18 C:\Users\Parth\.gradle\caches\transforms-4\b390e5b8ebdcdc0df4fadfbc23ddc3bd\transformed\jetified-activity-1.8.0\res
+com.example.medicinereminder.app-core-runtime-2.2.0-19 C:\Users\Parth\.gradle\caches\transforms-4\b850cb726f730cb4a3ca21cd0a7ae214\transformed\core-runtime-2.2.0\res
+com.example.medicinereminder.app-jetified-startup-runtime-1.1.1-20 C:\Users\Parth\.gradle\caches\transforms-4\cf26ffa24a926a4c6f83ab6fe0caa437\transformed\jetified-startup-runtime-1.1.1\res
+com.example.medicinereminder.app-jetified-emoji2-views-helper-1.2.0-21 C:\Users\Parth\.gradle\caches\transforms-4\d4eac5e34e2c5d287ecc80b4f83463cb\transformed\jetified-emoji2-views-helper-1.2.0\res
+com.example.medicinereminder.app-lifecycle-livedata-2.6.1-22 C:\Users\Parth\.gradle\caches\transforms-4\e010365cf1b2ebcf26407a4603c6e919\transformed\lifecycle-livedata-2.6.1\res
+com.example.medicinereminder.app-lifecycle-runtime-2.6.1-23 C:\Users\Parth\.gradle\caches\transforms-4\e13916d7556bf79977f0ff7549d8e176\transformed\lifecycle-runtime-2.6.1\res
+com.example.medicinereminder.app-jetified-viewpager2-1.0.0-24 C:\Users\Parth\.gradle\caches\transforms-4\ee5a0dc37326282d0453f62b8feb3e94\transformed\jetified-viewpager2-1.0.0\res
+com.example.medicinereminder.app-jetified-core-ktx-1.9.0-25 C:\Users\Parth\.gradle\caches\transforms-4\f012e3dfb1350674de77c1f21ed98c00\transformed\jetified-core-ktx-1.9.0\res
+com.example.medicinereminder.app-drawerlayout-1.1.1-26 C:\Users\Parth\.gradle\caches\transforms-4\f32d1fd76564fe49fc5564a5764885f3\transformed\drawerlayout-1.1.1\res
+com.example.medicinereminder.app-pngs-27 D:\med reminder\med-reminder\app\build\generated\res\pngs\debug
+com.example.medicinereminder.app-resValues-28 D:\med reminder\med-reminder\app\build\generated\res\resValues\debug
+com.example.medicinereminder.app-packageDebugResources-29 D:\med reminder\med-reminder\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.medicinereminder.app-packageDebugResources-30 D:\med reminder\med-reminder\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.medicinereminder.app-merged_res-31 D:\med reminder\med-reminder\app\build\intermediates\merged_res\debug
+com.example.medicinereminder.app-debug-32 D:\med reminder\med-reminder\app\src\debug\res
+com.example.medicinereminder.app-main-33 D:\med reminder\med-reminder\app\src\main\res

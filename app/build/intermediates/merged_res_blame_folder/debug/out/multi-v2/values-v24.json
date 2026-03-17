@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.medicinereminder.app-mergeDebugResources-29:/values-v24/values-v24.xml",
+            "outputFile": "com.example.medicinereminder.app-mergeDebugResources-31:/values-v24/values-v24.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Parth\\.gradle\\caches\\transforms-4\\6d4f71ac22de0c217a6fe48b0e3d74c3\\transformed\\appcompat-1.6.1\\res\\values-v24\\values-v24.xml",

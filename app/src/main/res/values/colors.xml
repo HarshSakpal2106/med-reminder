@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_page">#F7F7F3</color>
+
+    <color name="text_primary">#222222</color>
+    <color name="text_secondary">#AAAAAA</color>
+    <color name="text_muted">#BBBBBB</color>
+    <color name="label_caps">#CCCCCC</color>
+
+    <color name="green_dark">#2E7D47</color>
+    <color name="green_dark2">#2A6E42</color>
+    <color name="green_light">#D6EFE0</color>
+    <color name="green_xlight">#EEF7F2</color>
+    <color name="green_mid">#7BC49A</color>
+
+    <color name="red_light">#FDDDD6</color>
+    <color name="red_text">#C04030</color>
+
+    <color name="gray_light">#EFEFEA</color>
+    <color name="gray_text">#CCCCCC</color>
+
+    <color name="card_white">#FFFFFF</color>
+    <color name="ic_launcher_background">#2E7D47</color>
+</resources>

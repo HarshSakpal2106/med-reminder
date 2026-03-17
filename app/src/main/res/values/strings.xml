@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Medicine Reminder</string>
+
+    <!-- Header -->
+    <string name="greeting">Good Morning 👋</string>
+    <string name="today_date">Monday, 23 Feb 2026</string>
+
+    <!-- Section labels -->
+    <string name="label_patient">PATIENT</string>
+    <string name="label_progress">PROGRESS</string>
+    <string name="label_next_medicine">NEXT MEDICINE</string>
+    <string name="label_medicines">MEDICINES</string>
+    <string name="label_need_help">NEED HELP?</string>
+
+    <!-- Patient -->
+    <string name="patient_name">Harold Whitmore</string>
+    <string name="patient_meta">Age 78 · Blood O+ · Dr. Sandra Lee</string>
+    <string name="patient_today_pct">63%</string>
+    <string name="patient_today_sub">Today</string>
+
+    <!-- Progress -->
+    <string name="progress_pct">63%</string>
+    <string name="progress_done_label">DONE</string>
+    <string name="legend_taken">Taken</string>
+    <string name="legend_missed">Missed</string>
+    <string name="legend_upcoming">Upcoming</string>
+    <string name="count_taken">5</string>
+    <string name="count_missed">1</string>
+    <string name="count_upcoming">2</string>
+
+    <!-- Next medicine -->
+    <string name="next_due_label">DUE TODAY</string>
+    <string name="next_med_name">Furosemide</string>
+    <string name="next_med_dose">40mg · With evening meal</string>
+    <string name="next_med_time">6:00 PM</string>
+
+    <!-- Medicine list -->
+    <string name="med_metoprolol">Metoprolol</string>
+    <string name="med_metoprolol_desc">25mg · Heart Rate</string>
+    <string name="med_aspirin">Aspirin</string>
+    <string name="med_aspirin_desc">81mg · Blood Thinner</string>
+    <string name="med_lisinopril">Lisinopril</string>
+    <string name="med_lisinopril_desc">10mg · Blood Pressure</string>
+    <string name="med_metformin">Metformin</string>
+    <string name="med_metformin_desc">500mg · Blood Sugar</string>
+    <string name="med_vitamind3">Vitamin D3</string>
+    <string name="med_vitamind3_desc">1000 IU · Supplement</string>
+    <string name="med_atorvastatin">Atorvastatin</string>
+    <string name="med_atorvastatin_desc">20mg · Cholesterol</string>
+    <string name="med_furosemide">Furosemide</string>
+    <string name="med_furosemide_desc">40mg · Diuretic</string>
+    <string name="med_melatonin">Melatonin</string>
+    <string name="med_melatonin_desc">3mg · Sleep Aid</string>
+
+    <!-- Time labels -->
+    <string name="time_600am">6:00 AM</string>
+    <string name="time_800am">8:00 AM</string>
+    <string name="time_830am">8:30 AM</string>
+    <string name="time_900am">9:00 AM</string>
+    <string name="time_1200pm">12:00 PM</string>
+    <string name="time_600pm">6:00 PM</string>
+    <string name="time_900pm">9:00 PM</string>
+
+    <!-- Status icons -->
+    <string name="status_taken">✓</string>
+    <string name="status_missed">✕</string>
+    <string name="status_pending">○</string>
+
+    <!-- Call card -->
+    <string name="doctor_name">Dr. Sandra Lee</string>
+    <string name="doctor_sub">Your doctor</string>
+    <string name="btn_call">📞 Call</string>
+</resources>

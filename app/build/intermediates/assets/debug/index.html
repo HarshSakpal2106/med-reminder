@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Medication Reminder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: #F7F7F3; color: #222; min-height: 100vh; -webkit-tap-highlight-color: transparent; padding-bottom: 80px; }
+        .container { max-width: 420px; margin: 0 auto; padding: 28px 16px 40px; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* General UI Elements */
+        .header { margin-bottom: 24px; }
+        .header h1 { font-size: 30px; font-weight: 800; line-height: 1.2; }
+        .header p { font-size: 17px; color: #AAA; font-weight: 700; margin-top: 6px; }
+        .section-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; color: #CCC; margin-top: 24px; margin-bottom: 10px; }
+        .patient-card { background: white; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .patient-avatar { width: 56px; height: 56px; border-radius: 50%; background: #D6EFE0; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+        .patient-info { flex: 1; }
+        .patient-name { font-size: 22px; font-weight: 800; }
+        .patient-details { font-size: 16px; color: #AAA; font-weight: 700; margin-top: 4px; }
+        .patient-percentage { text-align: right; flex-shrink: 0; }
+        .percentage-value { font-size: 26px; font-weight: 800; color: #2E7D47; line-height: 1; }
+        .percentage-label { font-size: 12px; color: #AAA; font-weight: 700; margin-top: 2px; }
+
+        /* Dashboard Card */
+        .dashboard-card { background: linear-gradient(135deg, #2E7D47 0%, #3B9A5C 100%); border-radius: 16px; padding: 24px; position: relative; overflow: hidden; margin-bottom: 24px; box-shadow: 0 8px 20px rgba(46, 125, 71, 0.25); }
+        .dashboard-card.reminder-active { background: linear-gradient(135deg, #1E5D37 0%, #2B8A4C 100%); animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 8px 20px rgba(46, 125, 71, 0.25); } 50% { box-shadow: 0 8px 30px rgba(46, 125, 71, 0.45); } }
+        .dashboard-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; position: relative; z-index: 10; }
+        .dashboard-subtitle { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; color: rgba(255, 255, 255, 0.6); margin-bottom: 6px; }
+        .dashboard-title { font-size: 24px; font-weight: 900; color: white; }
+        .dashboard-count { width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); color: white; font-weight: 900; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+
+        /* Medicine Card inner */
+        .medicine-card { background: rgba(255, 255, 255, 0.95); border-radius: 12px; padding: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); position: relative; z-index: 10;}
+        .medicine-card-content { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .medicine-info-left { display: flex; align-items: center; gap: 12px; }
+        .medicine-icon { width: 44px; height: 44px; border-radius: 50%; background: #D6EFE0; color: #2E7D47; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        .medicine-id { font-size: 12px; font-weight: 700; color: #999; margin-bottom: 2px; }
+        .medicine-name { font-size: 20px; font-weight: 900; color: #222; line-height: 1.2; }
+        .medicine-time-area { text-align: right; }
+        .medicine-time-label { font-size: 12px; font-weight: 700; color: #999; margin-bottom: 2px; }
+        .medicine-time-badge { font-size: 18px; font-weight: 900; background: #EEF7F2; color: #2E7D47; padding: 4px 12px; border-radius: 8px; display: inline-block; cursor: pointer; transition: all 0.3s; }
+        .medicine-status { font-size: 12px; text-transform: uppercase; padding: 8px 12px; border-radius: 8px; text-align: center; background: #F0F9F4; color: #2E7D47; font-weight: 800; border: 2px dashed #C8E6D5; cursor: pointer; }
+        .medicine-status.active { background: #2E7D47; color: white; border: 2px solid #2E7D47; }
+        .countdown-display { font-size: 11px; text-transform: uppercase; padding: 6px 12px; border-radius: 8px; text-align: center; background: rgba(46, 125, 71, 0.1); color: #2E7D47; font-weight: 800; margin-top: 8px; display: none; }
+        .countdown-display.active { display: block; }
+
+        /* Progress Card */
+        .progress-card { background: white; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
+        .pie-chart-container { width: 100px; height: 100px; position: relative; flex-shrink: 0; }
+        .pie-chart { transform: rotate(-90deg); }
+        .pie-center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .pie-percentage { font-size: 22px; font-weight: 800; line-height: 1; }
+        .pie-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; color: #CCC; margin-top: 2px; }
+        .stats-list { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .stat-item { display: flex; align-items: center; justify-content: space-between; font-size: 17px; font-weight: 700; }
+        .stat-label { display: flex; align-items: center; gap: 8px; color: #555; }
+        .stat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .stat-value { font-weight: 800; }
+
+        /* Next Medicine */
+        .next-medicine-card { background: #2E7D47; border-radius: 16px; padding: 20px; color: white; margin-bottom: 24px; }
+        .next-medicine-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; color: rgba(255, 255, 255, 0.5); margin-bottom: 8px; }
+        .next-medicine-name { font-size: 22px; font-weight: 800; display: block; }
+        .next-medicine-details { font-size: 15px; font-weight: 700; opacity: 0.7; display: block; margin-top: 4px; }
+        .next-medicine-time { display: inline-block; background: rgba(255, 255, 255, 0.18); border-radius: 10px; padding: 6px 16px; font-size: 18px; font-weight: 800; margin-top: 12px; }
+
+        /* Doctor Card */
+        .doctor-card { background: white; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .doctor-avatar { width: 52px; height: 52px; border-radius: 50%; background: #EEF7F2; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+        .doctor-info { flex: 1; }
+        .doctor-name { font-size: 20px; font-weight: 900; display: block; }
+        .doctor-label { font-size: 15px; color: #AAA; font-weight: 700; display: block; margin-top: 4px; }
+
+        /* Lists */
+        .medicine-list-item { background: white; border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;}
+        .medicine-list-item:active { transform: scale(0.98); }
+        .status-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
+        .status-taken { background: #D6EFE0; color: #2E7D47; }
+        .status-missed { background: #FDDDD6; color: #C04030; }
+        .status-pending { background: #EFEFEA; color: #CCC; }
+        .medicine-list-info { flex: 1; }
+        .medicine-list-name { font-size: 19px; font-weight: 800; display: block; }
+        .medicine-list-name.missed { color: #C04030; text-decoration: line-through; }
+        .medicine-list-dosage { font-size: 15px; color: #BBB; font-weight: 700; display: block; margin-top: 2px; }
+        .medicine-list-time { font-size: 16px; font-weight: 700; color: #AAA; flex-shrink: 0; }
+
+        /* Delete Button */
+        .delete-btn { width: 36px; height: 36px; border-radius: 10px; background: #FFF0F0; color: #E53935; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; font-size: 16px; transition: all 0.2s; margin-left: 6px; }
+        .delete-btn:active { background: #FFCDD2; transform: scale(0.9); }
+
+        .call-button { background: #2A6E42; color: white; border: none; border-radius: 14px; padding: 14px 20px; font-size: 18px; font-weight: 900; font-family: 'Nunito', sans-serif; cursor: pointer; flex-shrink: 0; }
+
+        /* Bottom Navigation */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px; transition: all 0.3s; }
+        .nav-icon { font-size: 24px; transition: all 0.3s; }
+        .nav-label { font-size: 12px; font-weight: 700; color: #AAA; transition: all 0.3s; }
+        .nav-item.active .nav-icon { transform: scale(1.1); }
+        .nav-item.active .nav-label { color: #2E7D47; }
+
+        /* Overlays / Popups */
+        .alert-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.3s; }
+        .alert-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .alert-box { background: white; border-radius: 20px; padding: 32px; max-width: 380px; width: 90%; max-height: 90vh; overflow-y: auto; margin: 20px; text-align: center; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .alert-icon { width: 80px; height: 80px; border-radius: 50%; background: #FFF3CD; color: #FF6B00; font-size: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .alert-title { font-size: 24px; font-weight: 900; color: #222; margin-bottom: 12px; }
+        .alert-message { font-size: 16px; font-weight: 700; color: #666; margin-bottom: 24px; line-height: 1.5; }
+        .alert-buttons { display: flex; gap: 12px; }
+        .alert-button { flex: 1; border: none; border-radius: 12px; padding: 14px 20px; font-size: 16px; font-weight: 900; font-family: 'Nunito', sans-serif; cursor: pointer; }
+        .alert-button.yes { background: #2E7D47; color: white; }
+        .alert-button.no { background: #EFEFEA; color: #666; }
+
+        /* Input fields for OCR Edit */
+        .text-input { width: 100%; padding: 10px; border: 2px solid #D6EFE0; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700; color: #222; }
+        .ocr-label { font-size: 11px; font-weight: 800; color: #777; text-transform: uppercase; margin-bottom: 4px; display: block; text-align: left;}
+
+        /* Multiple Med Items */
+        .parsed-med-card { background: #F7F7F3; border: 1px solid #E0E0D8; border-radius: 14px; padding: 16px; margin-bottom: 16px; position: relative; }
+        .parsed-med-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .parsed-med-card-title { font-size: 14px; font-weight: 900; color: #222; }
+        .remove-med-btn { background: none; border: none; color: #E53935; font-size: 12px; font-weight: 800; cursor: pointer; }
+        .input-row { display: flex; gap: 10px; margin-top: 10px; }
+        .input-col { flex: 1; }
+
+        .add-another-btn { background: #EFEFEA; border: 2px dashed #CCC; border-radius: 12px; padding: 12px; width: 100%; font-size: 14px; font-weight: 800; color: #666; margin-bottom: 24px; cursor: pointer; transition: all 0.2s; }
+        .add-another-btn:active { background: #E0E0D8; }
+
+        /* List Page Specific */
+        .list-header { margin-bottom: 20px; }
+        .list-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+        .list-subtitle { font-size: 16px; color: #AAA; font-weight: 700; }
+    </style>
+</head>
+<body>
+<div class="page" id="listPage">
+    <div class="container">
+        <div class="list-header">
+            <div class="list-title">Medicines</div>
+            <div class="list-subtitle" id="listDate">Loading...</div>
+        </div>
+        <div class="section-label">Your Schedule</div>
+
+        <div id="medicinesList"></div>
+    </div>
+</div>
+
+<div class="page active" id="profilePage">
+    <div class="container">
+        <div class="header">
+            <h1 id="greeting">Good Morning 👋</h1>
+            <p id="currentDate">Loading...</p>
+        </div>
+
+        <div class="section-label" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Patient</span>
+            <button onclick="if(typeof Android!=='undefined') Android.openEditProfile()" style="background: none; border: none; color: #2E7D47; font-size: 14px; font-weight: 800; cursor: pointer;">Edit ✏️</button>
+        </div>
+        <div class="patient-card">
+            <div class="patient-avatar">👴</div>
+            <div class="patient-info">
+                <div class="patient-name" id="displayPatientName">Loading...</div>
+                <div class="patient-details"><span id="displayPatientAge">--</span> · Blood <span id="displayPatientBlood">--</span> · Dr. <span id="displayDocNameSmall">--</span></div>
+            </div>
+            <div class="patient-percentage">
+                <div class="percentage-value" id="patientPercentage">0%</div>
+                <div class="percentage-label">Today</div>
+            </div>
+        </div>
+
+        <div class="section-label">Prescription Reader</div>
+        <button class="call-button" onclick="scanPrescription()" style="background: #2E7D47; width: 100%; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            📷 Scan Prescription
+        </button>
+
+        <div class="section-label">Dashboard</div>
+        <div class="dashboard-card" id="dashboardCard">
+            <div class="dashboard-header">
+                <div>
+                    <div class="dashboard-subtitle">📋 Medicine Dashboard</div>
+                    <div class="dashboard-title">Today's Medication</div>
+                </div>
+                <div class="dashboard-count" id="dashboardTotalCount">0</div>
+            </div>
+            <div class="medicine-card" id="activeMedicineCard" style="display:none;">
+                <div class="medicine-card-content">
+                    <div class="medicine-info-left">
+                        <div class="medicine-icon">💊</div>
+                        <div class="medicine-details">
+                            <div class="medicine-id" id="dashboardMedId">ID: #0</div>
+                            <div class="medicine-name" id="dashboardMedName">None</div>
+                        </div>
+                    </div>
+                    <div class="medicine-time-area">
+                        <div class="medicine-time-label">Scheduled</div>
+                        <div class="medicine-time-badge" onclick="openTimePicker()">
+                            ⏰ <span id="scheduledTime">00:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="medicine-status" id="reminderButton" onclick="toggleReminder()">
+                    <span id="reminderText">✓ Ready to take</span>
+                </div>
+                <div class="countdown-display" id="countdownDisplay">
+                    <span id="countdownText"></span>
+                </div>
+            </div>
+            <div id="noMedicinesMessage" style="color:white; text-align:center; padding: 20px; font-weight:700;">
+                No medicines scheduled. Add one to start tracking.
+            </div>
+        </div>
+
+        <div class="section-label">Progress</div>
+        <div class="progress-card">
+            <div class="pie-chart-container">
+                <svg class="pie-chart" width="100" height="100" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#EFEFEA" stroke-width="14"></circle>
+                    <circle id="takenArc" cx="50" cy="50" r="38" fill="none" stroke="#7BC49A" stroke-width="14" stroke-linecap="round"></circle>
+                    <circle id="missedArc" cx="50" cy="50" r="38" fill="none" stroke="#FDDDD6" stroke-width="14" stroke-linecap="round"></circle>
+                </svg>
+                <div class="pie-center-text">
+                    <div class="pie-percentage" id="progressPercentage">0%</div>
+                    <div class="pie-label">Done</div>
+                </div>
+            </div>
+            <div class="stats-list">
+                <div class="stat-item">
+                    <div class="stat-label"><div class="stat-dot" style="background: #7BC49A;"></div>Taken</div>
+                    <div class="stat-value" id="takenCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label"><div class="stat-dot" style="background: #FDDDD6;"></div>Missed</div>
+                    <div class="stat-value" id="missedCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label"><div class="stat-dot" style="background: #EFEFEA;"></div>Upcoming</div>
+                    <div class="stat-value" id="upcomingCount">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Next Medicine</div>
+        <div class="next-medicine-card" id="nextMedicineCard" onclick="if(typeof Android!=='undefined') Android.speakMedicineName(document.getElementById('nextMedicineName').innerText)">
+            <div class="next-medicine-label">Due Next</div>
+            <strong class="next-medicine-name" id="nextMedicineName">-</strong>
+            <span class="next-medicine-details" id="nextMedicineDetails">-</span>
+            <div class="next-medicine-time" id="nextMedicineTime">-</div>
+        </div>
+
+        <div class="section-label">Accessibility</div>
+        <div class="patient-card" style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div class="patient-avatar" style="background: #FFF3CD; font-size: 24px;">🔊</div>
+                <div>
+                    <strong style="font-size: 18px; font-weight: 800; display: block;">Voice Alerts</strong>
+                    <span style="font-size: 14px; color: #AAA; font-weight: 700;">Reads medicine names aloud</span>
+                </div>
+            </div>
+            <!-- Simple custom toggle switch -->
+            <label style="position: relative; display: inline-block; width: 50px; height: 28px;">
+                <input type="checkbox" id="talkBackToggle" onchange="toggleTalkBack()" style="opacity: 0; width: 0; height: 0;">
+                <span id="talkBackSlider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;">
+                    <span id="talkBackKnob" style="position: absolute; content: ''; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                </span>
+            </label>
+        </div>
+
+        <div class="section-label">Need Help?</div>
+        <div class="doctor-card">
+            <div class="doctor-avatar">👩‍⚕️</div>
+            <div class="doctor-info">
+                <strong class="doctor-name" id="displayDocNameLarge">Dr. Loading...</strong>
+                <span class="doctor-label">Your doctor</span>
+            </div>
+            <button class="call-button" onclick="if(typeof Android!=='undefined') Android.callDoctor()">📞 Call</button>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <div class="nav-item" onclick="switchPage('list')">
+        <div class="nav-icon">📋</div>
+        <div class="nav-label">List</div>
+    </div>
+    <div class="nav-item active" onclick="switchPage('profile')">
+        <div class="nav-icon">👤</div>
+        <div class="nav-label">Profile</div>
+    </div>
+</div>
+
+<div class="alert-overlay" id="alertOverlay">
+    <div class="alert-box">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-title">Medicine Alert!</div>
+        <div class="alert-message">
+            It is time to take your medicine:<br>
+            <strong id="alertMedicineName">Medicine</strong><br>
+            Scheduled at <strong id="alertTime">00:00</strong>
+        </div>
+        <div class="alert-buttons">
+            <button class="alert-button yes" onclick="handleMedicineResponse('yes')">✓ Taken</button>
+            <button class="alert-button no" onclick="handleMedicineResponse('no')">✕ Missed</button>
+        </div>
+    </div>
+</div>
+
+<div class="alert-overlay" id="timePickerOverlay">
+    <div class="alert-box">
+        <div class="alert-title">Set Medicine Time</div>
+        <input type="time" class="text-input" id="timePickerInput" value="06:00" style="text-align: center; font-size: 24px;">
+        <div class="alert-buttons" style="margin-top: 20px;">
+            <button class="alert-button yes" onclick="saveCustomTime()">Save</button>
+            <button class="alert-button no" onclick="closeTimePicker()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div class="alert-overlay" id="deleteConfirmOverlay">
+    <div class="alert-box">
+        <div class="alert-icon" style="background: #FFF0F0; color: #E53935;">🗑️</div>
+        <div class="alert-title">Remove Medicine?</div>
+        <div class="alert-message">
+            Are you sure you want to delete <strong id="deleteMedicineName">this medicine</strong> from your schedule?
+        </div>
+        <div class="alert-buttons">
+            <button class="alert-button yes" style="background: #E53935; color: white;" onclick="confirmDelete()">Delete</button>
+            <button class="alert-button no" onclick="closeDeleteConfirm()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div class="alert-overlay" id="ocrConfirmOverlay">
+    <div class="alert-box" style="padding: 24px;">
+        <div class="alert-title" style="text-align: left; font-size: 22px;">Scanned Medicines</div>
+        <p style="text-align: left; font-size: 13px; color: #666; margin-bottom: 16px;">
+            Review the medicines we found. You can edit them, remove incorrect ones, or add missing ones.
+        </p>
+
+        <div style="text-align: right; margin-bottom: 8px;">
+            <button onclick="toggleRawText()" style="background:none; border:none; color:#2E7D47; font-size:12px; font-weight:800; cursor:pointer;">Show Raw Text 👁️</button>
+        </div>
+        <div id="ocrRawText" style="display:none; text-align: left; font-size: 11px; background: #f0f0f0; padding: 12px; border-radius: 8px; margin-bottom: 16px; max-height: 80px; overflow-y: auto; color: #555; word-wrap: break-word;"></div>
+
+        <div id="scannedMedicinesList" style="text-align: left;">
+        </div>
+
+        <button class="add-another-btn" onclick="addBlankMedicineRow()">+ Add Another Medicine</button>
+
+        <div class="alert-buttons" style="margin-top: 8px;">
+            <button class="alert-button yes" onclick="saveAllScannedMedicines()">Save All</button>
+            <button class="alert-button no" onclick="closeOcrConfirm()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize with empty array, will load from storage
+    let medicines = [];
+
+    let reminderActive = false;
+    let reminderTimeout = null;
+    let countdownInterval = null;
+    let targetTime = null;
+    let currentMedicineId = null;
+    let checkInterval = null;
+    let medicineToDelete = null;
+
+    // Temporary storage for OCR parsed array before saving
+    let pendingScannedMedicines = [];
+
+    function init() {
+        loadFromFirebase();
+        loadPatientData(); // Load profile details from Android
+        updateDateTime();
+        updateStats();
+        renderMedicinesList();
+        updateNextMedicine();
+        checkStoredReminder();
+        startMedicineChecker();
+        
+        // Sync TalkBack toggle with native Android State
+        if (typeof Android !== 'undefined') {
+            const isTbEnabled = Android.isTalkBackEnabled();
+            const tbCheckbox = document.getElementById('talkBackToggle');
+            if (tbCheckbox) tbCheckbox.checked = isTbEnabled;
+            updateTalkBackUI(isTbEnabled);
+        }
+    }
+
+    function toggleTalkBack() {
+        const tbCheckbox = document.getElementById('talkBackToggle');
+        const isEnabled = tbCheckbox.checked;
+        if (typeof Android !== 'undefined') {
+            Android.setTalkBack(isEnabled);
+        }
+        updateTalkBackUI(isEnabled);
+    }
+
+    function updateTalkBackUI(isEnabled) {
+        const slider = document.getElementById('talkBackSlider');
+        const knob = document.getElementById('talkBackKnob');
+        if (!slider || !knob) return;
+        
+        if (isEnabled) {
+            slider.style.backgroundColor = '#2E7D47';
+            knob.style.transform = 'translateX(22px)';
+        } else {
+            slider.style.backgroundColor = '#ccc';
+            knob.style.transform = 'translateX(0)';
+        }
+    }
+
+    function loadFromFirebase() {
+        const stored = localStorage.getItem('medicines_firebase');
+        if (stored) {
+            medicines = JSON.parse(stored);
+        }
+    }
+
+    function saveToFirebase() {
+        localStorage.setItem('medicines_firebase', JSON.stringify(medicines));
+        // Tell Android to update the AlarmManager automatically
+        if (typeof Android !== 'undefined') {
+            Android.updateMedicineAlarms(JSON.stringify(medicines));
+        }
+    }
+
+    function switchPage(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if (page === 'list') {
+            document.getElementById('listPage').classList.add('active');
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+        } else {
+            document.getElementById('profilePage').classList.add('active');
+            document.querySelectorAll('.nav-item')[1].classList.add('active');
+        }
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        const hour = now.getHours();
+        document.getElementById('greeting').textContent = hour < 12 ? 'Good Morning 👋' : hour < 18 ? 'Good Afternoon 👋' : 'Good Evening 👋';
+        const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
+        document.getElementById('currentDate').textContent = dateStr;
+        document.getElementById('listDate').textContent = dateStr;
+    }
+
+    function formatTimeDisplay(time24) {
+        if(!time24) return "12:00 AM";
+        const [hours, minutes] = time24.split(':');
+        const hour = parseInt(hours);
+        return `${hour % 12 || 12}:${minutes} ${hour >= 12 ? 'PM' : 'AM'}`;
+    }
+
+    function updateStats() {
+        const taken = medicines.filter(m => m.status === 'taken').length;
+        const missed = medicines.filter(m => m.status === 'missed').length;
+        const upcoming = medicines.filter(m => m.status === 'pending').length;
+        const total = medicines.length;
+        const percentage = total > 0 ? Math.round((taken / total) * 100) : 0;
+
+        document.getElementById('takenCount').textContent = taken;
+        document.getElementById('missedCount').textContent = missed;
+        document.getElementById('upcomingCount').textContent = upcoming;
+        document.getElementById('progressPercentage').textContent = percentage + '%';
+        document.getElementById('patientPercentage').textContent = percentage + '%';
+        document.getElementById('dashboardTotalCount').textContent = total;
+
+        const circumference = 2 * Math.PI * 38;
+        const takenArc = total > 0 ? (taken / total) * circumference : 0;
+        const missedArc = total > 0 ? (missed / total) * circumference : 0;
+
+        document.getElementById('takenArc').setAttribute('stroke-dasharray', takenArc + ' ' + (circumference - takenArc));
+        document.getElementById('missedArc').setAttribute('stroke-dasharray', missedArc + ' ' + (circumference - missedArc));
+        document.getElementById('missedArc').setAttribute('stroke-dashoffset', -takenArc);
+    }
+
+    function renderMedicinesList() {
+        const listContainer = document.getElementById('medicinesList');
+        listContainer.innerHTML = '';
+
+        if(medicines.length === 0) {
+            listContainer.innerHTML = '<div style="text-align:center; padding: 40px; color:#aaa; font-weight:700;">No medicines found. Scan a prescription to get started!</div>';
+            return;
+        }
+
+        // Sort by time
+        let sortedMeds = [...medicines].sort((a, b) => a.time.localeCompare(b.time));
+
+        sortedMeds.forEach(med => {
+            const item = document.createElement('div');
+            item.className = 'medicine-list-item';
+            
+            // Clicking the row itself (outside the name) toggles the take/miss status
+            item.onclick = () => toggleMedicineStatus(med.id);
+
+            const statusClass = med.status === 'taken' ? 'status-taken' : med.status === 'missed' ? 'status-missed' : 'status-pending';
+            const statusIcon = med.status === 'taken' ? '✓' : med.status === 'missed' ? '✕' : '○';
+            const nameClass = med.status === 'missed' ? 'medicine-list-name missed' : 'medicine-list-name';
+
+            // Escape quotes inside medicine name to avoid breaking the inline JS string
+            const safeName = med.name.replace(/'/g, "\\'");
+
+            item.innerHTML = `
+                <div class="status-icon ${statusClass}" onclick="event.stopPropagation(); toggleMedicineStatus(${med.id})">${statusIcon}</div>
+                <div class="medicine-list-info" onclick="event.stopPropagation(); if(typeof Android !== 'undefined') Android.speakMedicineName('${safeName}');">
+                    <strong class="${nameClass}">${med.name} 🔊</strong>
+                    <span class="medicine-list-dosage">${med.dosage} · ${med.purpose || 'Medication'}</span>
+                </div>
+                <div class="medicine-list-time">${formatTimeDisplay(med.time)}</div>
+                <div class="delete-btn" onclick="event.stopPropagation(); deleteMedicine(${med.id})">🗑️</div>
+            `;
+            listContainer.appendChild(item);
+        });
+    }
+
+    function deleteMedicine(id) {
+        const med = medicines.find(m => m.id === id);
+        if (!med) return;
+        medicineToDelete = id;
+        document.getElementById('deleteMedicineName').textContent = med.name;
+        document.getElementById('deleteConfirmOverlay').classList.add('active');
+    }
+
+    function closeDeleteConfirm() {
+        medicineToDelete = null;
+        document.getElementById('deleteConfirmOverlay').classList.remove('active');
+    }
+
+    function confirmDelete() {
+        if (medicineToDelete !== null) {
+            medicines = medicines.filter(m => m.id !== medicineToDelete);
+            if (reminderActive && currentMedicineId === medicineToDelete) stopReminder();
+            saveToFirebase(); updateStats(); renderMedicinesList(); updateNextMedicine();
+            showToast("Medicine removed");
+            closeDeleteConfirm();
+        }
+    }
+
+    function toggleMedicineStatus(id) {
+        const medicine = medicines.find(m => m.id === id);
+        if (!medicine) return;
+        if (medicine.status === 'pending') medicine.status = 'taken';
+        else if (medicine.status === 'taken') medicine.status = 'missed';
+        else medicine.status = 'pending';
+        saveToFirebase(); updateStats(); renderMedicinesList(); updateNextMedicine();
+    }
+
+    function updateNextMedicine() {
+        const now = new Date();
+        const currentTimeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        let pendingMeds = medicines.filter(m => m.status === 'pending');
+        pendingMeds.sort((a, b) => a.time.localeCompare(b.time));
+
+        let nextMed = pendingMeds.find(m => m.time >= currentTimeStr) || pendingMeds[0];
+
+        const nextCard = document.getElementById('nextMedicineCard');
+        const dashCard = document.getElementById('activeMedicineCard');
+        const dashEmpty = document.getElementById('noMedicinesMessage');
+
+        if (nextMed) {
+            nextCard.style.display = 'block';
+            document.getElementById('nextMedicineName').textContent = nextMed.name;
+            document.getElementById('nextMedicineDetails').textContent = nextMed.dosage + ' · ' + nextMed.purpose;
+            document.getElementById('nextMedicineTime').textContent = formatTimeDisplay(nextMed.time);
+
+            dashCard.style.display = 'block';
+            dashEmpty.style.display = 'none';
+            document.getElementById('dashboardMedId').textContent = 'ID: #' + nextMed.id;
+            document.getElementById('dashboardMedName').textContent = nextMed.name;
+            document.getElementById('scheduledTime').textContent = formatTimeDisplay(nextMed.time);
+
+            if(!reminderActive) {
+                currentMedicineId = nextMed.id;
+                startReminder();
+            }
+        } else {
+            nextCard.style.display = 'none';
+            dashCard.style.display = 'none';
+            dashEmpty.style.display = 'block';
+        }
+    }
+
+    function openTimePicker() {
+        if(!currentMedicineId) return;
+        const medicine = medicines.find(m => m.id === currentMedicineId);
+        if (medicine) document.getElementById('timePickerInput').value = medicine.time;
+        document.getElementById('timePickerOverlay').classList.add('active');
+    }
+
+    function closeTimePicker() { document.getElementById('timePickerOverlay').classList.remove('active'); }
+
+    function saveCustomTime() {
+        if(!currentMedicineId) return;
+        const newTime = document.getElementById('timePickerInput').value;
+        const medicine = medicines.find(m => m.id === currentMedicineId);
+        if (medicine && newTime) {
+            medicine.time = newTime;
+            document.getElementById('scheduledTime').textContent = formatTimeDisplay(newTime);
+            saveToFirebase(); renderMedicinesList(); updateNextMedicine(); closeTimePicker();
+            showToast('✓ Time updated');
+            if (reminderActive) { stopReminder(); startReminder(); }
+        }
+    }
+
+    function parseTimeString(timeStr) {
+        const now = new Date();
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        const targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0);
+        if (targetDate <= now) targetDate.setDate(targetDate.getDate() + 1);
+        return targetDate;
+    }
+
+    function toggleReminder() {
+        if(!currentMedicineId) return;
+        if (!reminderActive) {
+            startReminder();
+        } else {
+            // When user clicks the skip/cancel button on an active countdown
+            const medicine = medicines.find(m => m.id === currentMedicineId);
+            if (medicine) {
+                medicine.status = 'missed'; // Mark skipped
+                saveToFirebase();
+                updateStats();
+                renderMedicinesList();
+            }
+            stopReminder();
+            updateNextMedicine(); // Automatically pulls the next pending one up
+        }
+    }
+
+    function startReminder() {
+        if(!currentMedicineId) return;
+        const medicine = medicines.find(m => m.id === currentMedicineId);
+        if (!medicine) return;
+
+        targetTime = parseTimeString(medicine.time);
+        reminderActive = true;
+
+        localStorage.setItem('reminderActive', 'true');
+        localStorage.setItem('targetTime', targetTime.getTime());
+        localStorage.setItem('medicineId', currentMedicineId);
+
+        document.getElementById('dashboardCard').classList.add('reminder-active');
+        document.getElementById('reminderButton').classList.add('active');
+        document.getElementById('reminderText').innerHTML = '⏭️ Skip this Medicine';
+        document.getElementById('countdownDisplay').classList.add('active');
+
+        reminderTimeout = setTimeout(() => showAlert(currentMedicineId), targetTime - new Date());
+        updateCountdown(); countdownInterval = setInterval(updateCountdown, 1000);
+        if (navigator.vibrate) navigator.vibrate(200);
+    }
+
+    function stopReminder() {
+        reminderActive = false;
+        localStorage.removeItem('reminderActive'); localStorage.removeItem('targetTime'); localStorage.removeItem('medicineId');
+        if (reminderTimeout) clearTimeout(reminderTimeout);
+        if (countdownInterval) clearInterval(countdownInterval);
+        document.getElementById('dashboardCard').classList.remove('reminder-active');
+        document.getElementById('reminderButton').classList.remove('active');
+        document.getElementById('reminderText').textContent = '✓ Ready to take';
+        document.getElementById('countdownDisplay').classList.remove('active');
+        targetTime = null;
+    }
+
+    function updateCountdown() {
+        if (!targetTime) return;
+        const timeRemaining = targetTime - new Date();
+        if (timeRemaining <= 0) return document.getElementById('countdownText').textContent = 'Time\'s up!';
+        const hours = Math.floor(timeRemaining / 3600000);
+        const minutes = Math.floor((timeRemaining % 3600000) / 60000);
+        const seconds = Math.floor((timeRemaining % 60000) / 1000);
+        document.getElementById('countdownText').textContent = hours > 0 ? `${hours}h ${minutes}m ${seconds}s` : `${minutes}m ${seconds}s remaining`;
+    }
+
+    function checkStoredReminder() {
+        if (localStorage.getItem('reminderActive') === 'true') {
+            targetTime = new Date(parseInt(localStorage.getItem('targetTime')));
+            currentMedicineId = parseInt(localStorage.getItem('medicineId'));
+
+            const medExists = medicines.find(m => m.id === currentMedicineId);
+
+            if (medExists && targetTime - new Date() > 0) {
+                reminderActive = true;
+                document.getElementById('dashboardCard').classList.add('reminder-active');
+                document.getElementById('reminderButton').classList.add('active');
+                document.getElementById('reminderText').textContent = '🔔 Reminder Active';
+                document.getElementById('countdownDisplay').classList.add('active');
+                reminderTimeout = setTimeout(() => showAlert(currentMedicineId), targetTime - new Date());
+                updateCountdown(); countdownInterval = setInterval(updateCountdown, 1000);
+            } else {
+                if(medExists) showAlert(currentMedicineId);
+                else stopReminder();
+            }
+        }
+    }
+
+    function startMedicineChecker() {
+        checkInterval = setInterval(checkMedicineTimes, 60000);
+        checkMedicineTimes();
+    }
+
+    function checkMedicineTimes() {
+        const now = new Date();
+        const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        medicines.forEach(med => { if (med.status === 'pending' && med.time === currentTime) showAlert(med.id); });
+    }
+
+    let continuousSpeechInterval = null;
+
+    function showAlert(medicineId) {
+        const medicine = medicines.find(m => m.id === medicineId);
+        if (!medicine) return;
+        document.getElementById('alertMedicineName').textContent = `${medicine.name} (${medicine.dosage})`;
+        document.getElementById('alertTime').textContent = formatTimeDisplay(medicine.time);
+        document.getElementById('alertOverlay').classList.add('active');
+
+        const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuByvC');
+        audio.play().catch(() => {});
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+        if (typeof Android !== 'undefined') Android.showNotification(medicine.name, medicine.dosage, formatTimeDisplay(medicine.time), medicineId);
+
+        currentMedicineId = medicineId;
+        stopReminder();
+
+        // Start continuous speech loop
+        if (continuousSpeechInterval) clearInterval(continuousSpeechInterval);
+        
+        const speakAlert = () => {
+             // Escape quotes safely
+             const safeName = medicine.name.replace(/'/g, "\\'");
+             if (typeof Android !== 'undefined') {
+                 // Check if talkback is enabled before forcing it, or just rely on the bridge
+                 // We use a direct TTS call in Android to read it continuously
+                 Android.speakMedicineName("It is time to take your medicine, " + safeName);
+             }
+        };
+        
+        // Speak immediately, then every 6 seconds
+        speakAlert();
+        continuousSpeechInterval = setInterval(speakAlert, 6000);
+    }
+
+    function handleMedicineResponse(response) {
+        // Stop continuous speech
+        if (continuousSpeechInterval) {
+            clearInterval(continuousSpeechInterval);
+            continuousSpeechInterval = null;
+        }
+        if (typeof Android !== 'undefined') {
+            Android.stopSpeaking(); // Need to implement this in Java to cut off active TTS
+        }
+
+        const medicine = medicines.find(m => m.id === currentMedicineId);
+        if (medicine) {
+            medicine.status = response === 'yes' ? 'taken' : 'missed';
+            saveToFirebase(); updateStats(); renderMedicinesList(); updateNextMedicine();
+        }
+        document.getElementById('alertOverlay').classList.remove('active');
+        showToast(response === 'yes' ? '✓ Medicine marked as taken!' : '✕ Medicine marked as missed');
+    }
+
+    function handleNotificationResponse(medicineId, response) {
+        currentMedicineId = medicineId;
+        handleMedicineResponse(response);
+    }
+
+    function showToast(message) {
+        if (typeof Android !== 'undefined') Android.showToast(message); else alert(message);
+    }
+
+    // Called on init and when profile is updated from Android
+    function loadPatientData() {
+        if (typeof Android !== 'undefined') {
+            try {
+                const dataStr = Android.getPatientData();
+                const data = JSON.parse(dataStr);
+                
+                document.getElementById('displayPatientName').textContent = data.name || 'Patient';
+                document.getElementById('displayPatientAge').textContent = data.age ? 'Age ' + data.age : '';
+                document.getElementById('displayPatientBlood').textContent = data.blood || '--';
+                
+                const dName = data.docName || 'Your Doctor';
+                document.getElementById('displayDocNameSmall').textContent = dName;
+                document.getElementById('displayDocNameLarge').textContent = 'Dr. ' + dName;
+            } catch(e) {
+                console.error("Error loading patient data", e);
+            }
+        }
+    }
+
+    // =========================================================
+    // HIGHLY ROBUST LINE-BY-LINE OCR PARSER WITH CONTEXT TIME
+    // =========================================================
+
+    function scanPrescription() {
+        if (typeof Android !== 'undefined') {
+            Android.startPrescriptionScan();
+            showToast("Opening camera/gallery...");
+        } else {
+            // Web test block
+            handleOCRResult("Patient: John Doe\nAmoxicillin 500mg\nTake 1 tablet in the morning\nIbuprofen\nTake 2 pills at Bedtime");
+        }
+    }
+
+    function toggleRawText() {
+        const rawEl = document.getElementById('ocrRawText');
+        rawEl.style.display = rawEl.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function handleOCRResult(extractedText) {
+        document.getElementById('ocrRawText').innerText = extractedText;
+        pendingScannedMedicines = parseMultiplePrescriptions(extractedText);
+        renderScannedMedicinesUI();
+        document.getElementById('ocrConfirmOverlay').classList.add('active');
+    }
+
+    function closeOcrConfirm() {
+        document.getElementById('ocrConfirmOverlay').classList.remove('active');
+    }
+
+    // THE UPGRADED PARSER: Checks for explicit times (AM/PM) AND time words (morning/night)
+    function parseMultiplePrescriptions(text) {
+        let parsedMeds = [];
+        let lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 1);
+
+        const dosageRegex = /\b(\d+(?:\.\d+)?)\s*(mg|ml|g|mcg|tablet|pill|capsule|drop|puff|unit|iu)s?\b/i;
+        const stopWords = ['take', 'the', 'patient', 'name', 'dr', 'doctor', 'date', 'rx', 'pharmacy', 'qty', 'refill', 'time', 'dosage', 'address', 'phone', 'every', 'daily', 'once', 'twice'];
+
+        let currentMed = null;
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i];
+            let lowerLine = line.toLowerCase();
+
+            let dosageMatch = line.match(dosageRegex);
+            let timeMatch = extractTimeHelper(line);
+
+            let firstWord = lowerLine.split(' ')[0].replace(/[^a-z]/g, '');
+            let isLikelyName = !dosageMatch && !timeMatch && line.split(' ').length <= 4 && firstWord.length > 2 && !stopWords.includes(firstWord);
+
+            if (dosageMatch) {
+                let dosage = dosageMatch[0];
+                let nameStr = "";
+                let textBefore = line.substring(0, dosageMatch.index).trim();
+                let words = textBefore.split(/[\s,;]+/);
+
+                for (let w = words.length - 1; w >= 0; w--) {
+                    let clean = words[w].replace(/[^a-zA-Z0-9]/g, '');
+                    if (clean.length > 2 && !stopWords.includes(clean.toLowerCase())) {
+                        nameStr = clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+                        break;
+                    }
+                }
+
+                if (nameStr) {
+                    if (currentMed) parsedMeds.push(currentMed);
+                    currentMed = { name: nameStr, dosage: dosage, time: timeMatch || "09:00" };
+                } else if (currentMed) {
+                    if (!currentMed.dosage || currentMed.dosage === "1 pill") currentMed.dosage = dosage;
+                    if (timeMatch && currentMed.time === "09:00") currentMed.time = timeMatch;
+                } else {
+                    currentMed = { name: "Medicine", dosage: dosage, time: timeMatch || "09:00" };
+                }
+            } else if (isLikelyName) {
+                if (currentMed) parsedMeds.push(currentMed);
+                currentMed = {
+                    name: line.replace(/[^a-zA-Z0-9\s]/g, '').trim(),
+                    dosage: "1 pill",
+                    time: timeMatch || "09:00"
+                };
+            } else if (currentMed && timeMatch) {
+                currentMed.time = timeMatch;
+            }
+        }
+
+        if (currentMed) parsedMeds.push(currentMed);
+
+        let uniqueMeds = [];
+        parsedMeds.forEach(med => {
+            if (med.name.toLowerCase() !== "medicine" && !uniqueMeds.find(u => u.name.toLowerCase() === med.name.toLowerCase())) {
+                uniqueMeds.push(med);
+            } else if (med.name.toLowerCase() === "medicine") {
+                uniqueMeds.push(med);
+            }
+        });
+
+        if (uniqueMeds.length === 0) {
+            uniqueMeds.push({ name: "", dosage: "", time: "09:00" });
+        }
+
+        return uniqueMeds;
+    }
+
+    // Helper to find AM/PM format OR keyword time formats (Morning/Night)
+    function extractTimeHelper(searchBlock) {
+        // 1. 12-hour format with AM/PM (e.g. 8 AM, 8;30PM, 8.30 a.m., 8am)
+        const timeRegex12 = /\b(1[0-2]|0?[1-9])\s*(?:[:.;]\s*([0-5][0-9]))?\s*(am|pm|a\.m\.|p\.m\.)\b/i;
+        const match12 = searchBlock.match(timeRegex12);
+        if (match12) {
+            let h = parseInt(match12[1]);
+            let m = match12[2] || "00";
+            let ampm = match12[3].toLowerCase().replace(/\./g, '');
+            if (ampm === 'pm' && h < 12) h += 12;
+            if (ampm === 'am' && h === 12) h = 0;
+            return `${String(h).padStart(2, '0')}:${m}`;
+        }
+
+        // 2. 24-hour format (e.g. 14:30, 08:00, 14.30)
+        const timeRegex24 = /\b([01]?[0-9]|2[0-3])\s*[:.;]\s*([0-5][0-9])\b/i;
+        const match24 = searchBlock.match(timeRegex24);
+        if (match24) {
+            return `${String(match24[1]).padStart(2, '0')}:${match24[2]}`;
+        }
+
+        // 3. Keywords
+        const lowerBlock = searchBlock.toLowerCase();
+        if (/\b(morning|breakfast|wakeup|wake)\b/.test(lowerBlock)) return "08:00";
+        if (/\b(noon|lunch|midday)\b/.test(lowerBlock)) return "12:00";
+        if (/\b(afternoon)\b/.test(lowerBlock)) return "14:00";
+        if (/\b(evening|dinner|supper)\b/.test(lowerBlock)) return "18:00";
+        if (/\b(night|bedtime|bed|sleep)\b/.test(lowerBlock)) return "21:00";
+
+        // 4. "Take at [Number]" fallback
+        const takeAtRegex = /\b(?:at|@)\s*(1[0-2]|0?[1-9])\b/i;
+        const matchTakeAt = searchBlock.match(takeAtRegex);
+        if (matchTakeAt) {
+            let h = parseInt(matchTakeAt[1]);
+            if (h >= 1 && h <= 6) h += 12; // Assume PM if between 1 and 6
+            return `${String(h).padStart(2, '0')}:00`;
+        }
+
+        return null;
+    }
+
+    function renderScannedMedicinesUI() {
+        const container = document.getElementById('scannedMedicinesList');
+        container.innerHTML = '';
+
+        if (!document.getElementById('common-meds')) {
+            document.body.insertAdjacentHTML('beforeend', `
+                <datalist id="common-meds">
+                    <option value="Amoxicillin"><option value="Aspirin"><option value="Ibuprofen">
+                    <option value="Acetaminophen"><option value="Lisinopril"><option value="Atorvastatin">
+                    <option value="Metformin"><option value="Amlodipine"><option value="Metoprolol">
+                    <option value="Omeprazole"><option value="Losartan"><option value="Gabapentin">
+                    <option value="Sertraline"><option value="Simvastatin"><option value="Montelukast">
+                    <option value="Escitalopram"><option value="Rosuvastatin"><option value="Lexapro">
+                    <option value="Tylenol"><option value="Advil">
+                </datalist>
+            `);
+        }
+
+        pendingScannedMedicines.forEach((med, index) => {
+            container.innerHTML += `
+                <div class="parsed-med-card" id="scannedMedRow_${index}">
+                    <div class="parsed-med-card-header">
+                        <div class="parsed-med-card-title">Medicine ${index + 1}</div>
+                        <button class="remove-med-btn" onclick="removeScannedMedicine(${index})">✕ Remove</button>
+                    </div>
+
+                    <label class="ocr-label">Name</label>
+                    <input type="text" id="scanName_${index}" class="text-input" value="${med.name}" list="common-meds" placeholder="e.g. Aspirin">
+
+                    <div class="input-row">
+                        <div class="input-col">
+                            <label class="ocr-label">Dosage</label>
+                            <input type="text" id="scanDosage_${index}" class="text-input" value="${med.dosage}" placeholder="e.g. 500mg">
+                        </div>
+                        <div class="input-col">
+                            <label class="ocr-label">Time</label>
+                            <input type="time" id="scanTime_${index}" class="text-input" value="${med.time}">
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function addBlankMedicineRow() {
+        pendingScannedMedicines.push({ name: "", dosage: "", time: "09:00" });
+        renderScannedMedicinesUI();
+    }
+
+    function removeScannedMedicine(index) {
+        pendingScannedMedicines.splice(index, 1);
+        renderScannedMedicinesUI();
+    }
+
+    function saveAllScannedMedicines() {
+        let addedCount = 0;
+
+        pendingScannedMedicines.forEach((med, index) => {
+            const nameInput = document.getElementById(`scanName_${index}`);
+            if(!nameInput) return;
+
+            const finalName = nameInput.value.trim();
+            const finalDosage = document.getElementById(`scanDosage_${index}`).value.trim();
+            const finalTime = document.getElementById(`scanTime_${index}`).value;
+
+            if (finalName || finalDosage) {
+                const newId = medicines.length > 0 ? Math.max(...medicines.map(m => m.id)) + 1 : 1;
+
+                medicines.push({
+                    id: newId,
+                    name: finalName || "Unknown",
+                    dosage: finalDosage || "1 pill",
+                    purpose: 'Prescription',
+                    time: finalTime || "09:00",
+                    status: 'pending'
+                });
+                addedCount++;
+            }
+        });
+
+        if (addedCount > 0) {
+            saveToFirebase();
+            updateStats();
+            renderMedicinesList();
+            updateNextMedicine();
+            switchPage('profile'); // Send them back to dashboard to see tracking
+            showToast(`✓ Added ${addedCount} medicine(s)`);
+        }
+        closeOcrConfirm();
+    }
+
+    init();
+</script>
+</body>
+</html>
